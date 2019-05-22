@@ -1,0 +1,56 @@
+body{
+	background-color: #D9B08C
+}
+
+.leaflet-container{
+	padding-top: 0px;
+	top: 12%;
+	position: absolute;
+	left: 5%;
+}
+
+
+#pkLot{
+	top:12%;
+	right: 5%;
+	position: absolute;
+	padding-left: 1em;
+	max-width:40%;
+}
+
+svg{
+	left: 5%;
+	top:65%;
+	position: absolute;
+	padding-bottom: 2em;
+}
+
+.bar{
+    fill: steelblue;
+    outline-width: 1px;
+    outline-color: black;
+}
+
+.axis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+
+
+#info{
+	padding-top: 1em;
+	top:65%;
+	left:50%;
+	position: absolute;
+}
+
+
+.Project{
+	text-align: center;
+	font-size: 3em;	
+}
+
+.infoText{
+	font-size: 1.5em;
+}
