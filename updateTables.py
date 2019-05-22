@@ -1,4 +1,4 @@
-from .models import parkingLot, parkingSpot, occupiedHistory
+from .models import parkingLot, parkingSpot
 import requests
 from PIL import Image
 from .Mask_RCNN.segmentImages import segmentImages
@@ -27,7 +27,7 @@ class updateTables():
 		print("Rois:", rois)
 		self.findOccupiedSpots(rois)
 		self.updateImages(images, segmented_images)
-		self.updateOccupiedHistory(results)
+		# self.updateOccupiedHistory(results)
 
 
 
@@ -62,6 +62,8 @@ class updateTables():
 		return results, segmented_images
 		
 
+
+	"""
 	# updates 'image' and 'segmentedImage' in parkingLot
 	def updateImages(self, image, segmentedImage):
 		i=0
@@ -77,9 +79,9 @@ class updateTables():
 			segmentedImage=img_dir+ p.lotName+'_segmented.jpg')			
 			i+=1
 		
+	"""
 
-
-
+	"""
 	# Updates any occupied spots in the occupiedHistory table
 	def updateOccupiedHistory(self,results):
 		# spots = parkingSpot.objects.all()
@@ -99,7 +101,7 @@ class updateTables():
 		entry = occupiedHistory.create(totalSpots=total)
 		entry.save()
 		
-
+	"""
 
 	# get the x and y coordinates of the spots from parkingLot table - returns list of tuples in form of [(x1,y1), (x2,y2) ... ]
 	def getPixelLocations(self, pkLot):

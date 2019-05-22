@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import parkingLot, parkingSpot, occupiedHistory
+from .models import parkingLot, parkingSpot
 
 # class WCUClassesAdmin(admin.ModelAdmin):
 # 	 fieldsets = [
@@ -15,4 +15,4 @@ from .models import parkingLot, parkingSpot, occupiedHistory
 
 admin.site.register(parkingLot)
 admin.site.register(parkingSpot)
-admin.site.register(occupiedHistory)
+# admin.site.register(occupiedHistory)

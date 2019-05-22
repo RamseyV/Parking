@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from .updateTables import updateTables
-from .models import parkingLot, parkingSpot, occupiedHistory
+from .models import parkingLot, parkingSpot
 import json
 from django.core.serializers.json import DjangoJSONEncoder
 from django.http import JsonResponse
@@ -14,7 +14,7 @@ def parking(request):
 	# updateTables()
 	parking_lots = parkingLot.objects.all()
 	parking_spots = parkingSpot.objects.all()
-	occupied_history = occupiedHistory.objects.all()
+	# occupied_history = occupiedHistory.objects.all()
 
 
 	# static path for all of the images
@@ -32,7 +32,7 @@ def parking(request):
 		parking_spots_list.append(dictionary)
 	parking_spots_json = json.dumps(parking_spots_list, cls=DjangoJSONEncoder) # turn paring_spots_list to json
 
-
+	"""
 	# get occupied history for today
 	today = date.today()
 	spots_for_today = occupiedHistory.objects.filter(time__year=today.year,time__month=today.month, time__day=today.day)
@@ -49,14 +49,15 @@ def parking(request):
 
 
 	todays_spots = json.dumps(todays_spots) # turn todays spots to json file
+	"""
+
 
 	# return render of parking.html with context
 	return render(request, 'parking/parking.html', context={"parking_lots":parkingLot.objects.all,
 		"parking_spots":parkingSpot.objects.all,
-		"occupied_history":occupied_history,
 		"images": images,
 		"parking_spots_json":parking_spots_json,
-		"todays_spots":todays_spots})
+		})
 
 
 

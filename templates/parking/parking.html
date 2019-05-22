@@ -24,6 +24,9 @@
 
 {% block content %}
 
+<div id="map"></div>
+
+
 <div id="lot">
 	{% for lot in parking_lots %}
 		<p class="lotName">{{lot.lotName}}</p>
@@ -37,7 +40,7 @@
 
 </div>
 
-<div id="map"></div>
+
 
   <script>
 
@@ -88,10 +91,10 @@
 		  	}
 		  }
 
-		  setTimeout(function(){
-			// map.panTo({lat:39.951478, lng:-75.592974})
+		//   setTimeout(function(){
+		// 	// map.panTo({lat:39.951478, lng:-75.592974})
 		 
-		},1000)
+		// },1000)
 		}
 
 

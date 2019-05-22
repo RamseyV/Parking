@@ -9,8 +9,8 @@ class parkingLot(models.Model):
 	numSpots = models.IntegerField()
 	occupiedSpots = models.IntegerField()
 	imageURL = models.URLField(max_length=200)
-	image = models.ImageField(blank=True, null=True)
-	segmentedImage = models.ImageField(blank=True,null=True)
+	lotPosition = GeopositionField(default='39.958, -75.601',null=True, blank=True)
+	lastUpdate = models.DateTimeField(default=datetime.now(), blank=True)
 	def __str__(self):
 		return self.lotName
 
@@ -26,12 +26,12 @@ class parkingSpot(models.Model):
 	lot = models.ForeignKey(parkingLot, blank=True, null=True, on_delete=models.SET_NULL)
 	
 	
-class occupiedHistory(models.Model):
-	time = models.DateTimeField(default=datetime.now(), blank=True)
-	totalSpots = models.IntegerField(null=True)
+# class occupiedHistory(models.Model):
+# 	time = models.DateTimeField(default=datetime.now(), blank=True)
+# 	totalSpots = models.IntegerField(null=True)
 
-	@classmethod
-	def create(cls, totalSpots):
-		occupiedHistory = cls(totalSpots=totalSpots)
-		return occupiedHistory
+# 	@classmethod
+# 	def create(cls, totalSpots):
+# 		occupiedHistory = cls(totalSpots=totalSpots)
+# 		return occupiedHistory
 

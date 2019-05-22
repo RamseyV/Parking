@@ -8,29 +8,22 @@ body{
 	font-family: "Courier New";
 }
 
-.leaflet-container{
-	padding-top: 0px;
-	top: 12%;
-	position: absolute;
-	left: 5%;
-}
-
 
 #map {
-        height: 60%;  /* The height is 400 pixels */
-        width: 45%;  /* The width is the width of the web page */
+        height: 65%;  
+        width: 90%;  
         padding-top: 0px;
-		top: 20%;
+		top: 10%;
 		position: absolute;
 		left: 5%;
 }
 
 
 #lot{
-	height: 60%;
-	width: 40%;
-	top:15%;
+	height: 75%;
+	width: 90%;
 	right:5%;
+	top: 80%;
 	text-align: center;
 	position: absolute;
 	border-color: black;
@@ -48,12 +41,101 @@ body{
 }
 
 .pkLot{
-	padding-top: 0em;
+	padding-top: 1em;
 	margin-top: 0px;
 	top:0px;
 	width: 100%;
 }
 
+#info{
+	width: 90%;
+	padding-top: 1em;
+	top: 125%;
+	position: absolute;
+	overflow-y: auto;
+	padding: 5%;
+	margin-bottom: 5%;
+	text-align: center;
+}
+
+
+.Project{
+	/*text-align: center;*/
+	font-size: 3em;	
+}
+
+.infoText{
+	font-size: 1.5em;
+}
+
+
+/* for screens and larger displays*/
+@media screen and (min-width: 768px){
+
+	#map {
+	        height: 60%;  /* The height is 400 pixels */
+	        width: 45%;  /* The width is the width of the web page */
+	        padding-top: 0px;
+			top: 20%;
+			position: absolute;
+			left: 5%;
+	}
+
+
+	#lot{
+		height: 60%;
+		width: 40%;
+		top:15%;
+		right:5%;
+		padding: 0%;
+		text-align: center;
+		position: absolute;
+		border-color: black;
+	}
+
+	.lotName{
+		bottom: 0px;
+		margin-bottom: 0px;
+		padding-bottom: 0px;
+		top: 0px;
+		padding-top: 0px;
+		margin-top: 0px;
+		font-size: 3em;
+		
+	}
+
+	.pkLot{
+		padding-top: 0em;
+		margin-top: 0px;
+		top:0px;
+		width: 100%;
+	}
+
+	#info{
+		padding-top: 1em;
+		top:80%;
+		padding: 5%;
+		width: 90%;
+		position: absolute;
+		text-align:center;
+	}
+
+
+	.Project{
+		font-size: 3em;	
+	}
+
+	.infoText{
+		font-size: 1.5em;
+	}
+
+
+
+} /*End of @media*/
+
+
+
+/*
 svg{
 	left: 5%;
 	top:65%;
@@ -72,21 +154,4 @@ svg{
   stroke: #000;
   shape-rendering: crispEdges;
 }
-
-
-#info{
-	padding-top: 1em;
-	top:65%;
-	left:50%;
-	position: absolute;
-}
-
-
-.Project{
-	text-align: center;
-	font-size: 3em;	
-}
-
-.infoText{
-	font-size: 1.5em;
-}
+*/
