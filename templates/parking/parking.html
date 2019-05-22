@@ -17,17 +17,97 @@
 	<script src="https://unpkg.com/mappa-mundi@0.0.5/dist/mappa.js" type="text/javascript"></script>
 
 	<script src="http://d3js.org/d3.v3.min.js"></script>
+
+	
 {% endblock %} 
 
 
 {% block content %}
 
-	
+<div id="lot">
+	{% for lot in parking_lots %}
+		<p class="lotName">{{lot.lotName}}</p>
+	{% endfor %}
 
-	<canvas style="width: 25%; height: 30%;" id="map_canvas"></canvas>
+	<!-- Display images of segmented lots -->
+	{% for image in images %} 
+		<img class="pkLot" src="{% static image %}">
+		<!-- <p>'{{image}}'</p> -->
+	{% endfor %} 
+
+</div>
+
+<div id="map"></div>
+
+  <script>
+
+  		var spaces = {{ parking_spots_json | safe }};
+
+		// Initialize and add the map
+		function initMap() {
+		  // The location of Uluru
+		  var lot = {lat: 39.950700, lng: -75.591700};
+		  
+		  var mapOptions = {
+		    zoom: 18,
+		    center: lot,
+		    mapTypeId: 'satellite'
+		  };
 
 
-	<!-- Mappa Javascipt -->
+		  // The map, centered at Uluru
+		  var map = new google.maps.Map(
+		      document.getElementById('map'), mapOptions);
+
+		  // add parking spaces to map 
+		  for(var i in spaces){
+		  	var spotLocation = {lat: parseFloat(spaces[i].lat), lng: parseFloat(spaces[i].long)};
+		  	if(spaces[i].occupied){
+		  		var spotCircle = new google.maps.Circle({
+			      strokeColor: '#FF0000',
+			      strokeOpacity: 0.8,
+			      strokeWeight: 2,
+			      fillColor: '#FF0000',
+			      fillOpacity: 0.35,
+			      map: map,
+			      center: spotLocation,
+			      radius: 1
+			    });
+		  	}
+		  	else{
+			  	var spotCircle = new google.maps.Circle({
+			      strokeColor: '#42f471',
+			      strokeOpacity: 0.8,
+			      strokeWeight: 2,
+			      fillColor: '#42f471',
+			      fillOpacity: 0.35,
+			      map: map,
+			      center: spotLocation,
+			      radius: 1
+			    });
+		  	}
+		  }
+
+		  setTimeout(function(){
+			// map.panTo({lat:39.951478, lng:-75.592974})
+		 
+		},1000)
+		}
+
+
+		setTimeout(function(){
+  			 window.location.reload(1);
+		}, 500000);
+
+
+  </script>
+  <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDt17_qk9CfGNYeVTiwf6rlF12zW0plqTQ&callback=initMap"
+  type="text/javascript"></script>
+
+
+
+<!-- Mappa JS
+
 	<script type="text/javascript">
 		let myMap;
 		let canvas;
@@ -38,8 +118,9 @@
 		const mappa = new Mappa('Leaflet');
 
 
-		// 39.950051, -75.600459
-		const options = {
+		//39.951478, -75.592974  m-lot
+		var options = {
+			// m1 lot
 			lat:39.950700,
 			lng:-75.591700,
 			zoom:18,
@@ -100,23 +181,25 @@
 		setTimeout(function(){
   		 window.location.reload(1);
 		}, 500000);
+
+		setTimeout(function(){
+			myMap.panTo([39.951478, -75.592974])
+		 
+		},1000)
 	</script>
 
 
-	<!-- Segmented Image of M1 Lot -->
-	<img id="pkLot" src="{% static 'parking/images/M1-Lot_segmented.jpg' %}">
-	
-
+-->
 
 	<!-- Text about Project -->
-	<p class="Project">Project Information</p>
+	<!-- <p class="Project">Project Information</p> -->
 	<div id="info"><p class="Project">Project Information</p><p class="infoText"> This project uses machine learning to detect which parking spaces are being currently occupied. The map in the upper left hand corner is showing M1 Lot on the corner of S. Matlack and E. Campus Dr. This is the parking lot next to the parking garage on Matlack. The red dots show which spots are currently being taken up by cars, conversely we know which parking spots are empty. The image above is the output of the Mask-RCNN neural network that is used to detect and segment the cars.The graph to the left shows how many cars have been in this parking lot throughout today, that this camera can see. The methods used in this project were designed to easily allow other parking lots to be added to it. </p>
 	 </div>
 
 
 
 <!-- Script for D3 bar graph -->
- <script>
+ <!-- <script>
 		var data = {{ todays_spots | safe }};
 		var margin = {top: 20, right: 20, bottom: 70, left: 40},
 		    width = 600 - margin.left - margin.right,
@@ -204,7 +287,7 @@
 		      .attr("height", function(d) { return height - y(d.total); });
 
 		
-	</script>
+	</script> -->
 
  
 

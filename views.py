@@ -9,26 +9,7 @@ from datetime import date
 from django.views.decorators.cache import never_cache
 
 
-def occupied_history_json(request):
-
-	occupied_history = occupiedHistory.objects.all()
-
-	occupied = {}
-	for o in occupied_history:
-	
-		try:
-			if(str(o.time.date()) in occupied):
-				occupied[str(o.time.date())] += o.totalSpots
-			else:
-				occupied[str(o.time.date())] =  o.totalSpots
-
-		except AttributeError:
-			print("Didn't work for ", o)
-		
-
-	return JsonResponse(occupied, safe=False)
-
-@never_cache
+@never_cache # don't cache pictures - important for displaying updated pictures of lots
 def parking(request):
 	# updateTables()
 	parking_lots = parkingLot.objects.all()
@@ -36,45 +17,23 @@ def parking(request):
 	occupied_history = occupiedHistory.objects.all()
 
 
+	# static path for all of the images
 	images = []
 	for p in parking_lots:
 		path = 'parking/images/' + p.lotName + '_segmented.jpg'
 		images.append(path)
 
 
-	
+	# spot locations and occupied status for all spots 
 	parking_spots_list = []
 
 	for p in parking_spots:
 		dictionary = {"lat":p.position.latitude, "long":p.position.longitude, "occupied":p.occupied}
 		parking_spots_list.append(dictionary)
-	parking_spots = json.dumps(parking_spots_list, cls=DjangoJSONEncoder)
-
-	
+	parking_spots_json = json.dumps(parking_spots_list, cls=DjangoJSONEncoder) # turn paring_spots_list to json
 
 
-	# get all of occupied history for today
-	occupied = {}
-	for o in occupied_history:
-	
-		try:
-			if(str(o.time.date()) in occupied):
-				occupied[str(o.time.date())] += o.totalSpots
-			else:
-				occupied[str(o.time.date())] =  o.totalSpots
-
-		except AttributeError:
-			print("Didn't work for ", o)
-	
-	occupied_list = []
-	for k,v in occupied.items():
-		occupied_list.append({"date": k, "total": v})
-
-	occupied_json = json.dumps(occupied_list) # turn occupied list into json
-
-
-
-
+	# get occupied history for today
 	today = date.today()
 	spots_for_today = occupiedHistory.objects.filter(time__year=today.year,time__month=today.month, time__day=today.day)
 
@@ -89,15 +48,14 @@ def parking(request):
 		# todays_spots.append({"time":str(s.time.time()), "total": s.totalSpots})
 
 
-	todays_spots = json.dumps(todays_spots)
+	todays_spots = json.dumps(todays_spots) # turn todays spots to json file
 
-
+	# return render of parking.html with context
 	return render(request, 'parking/parking.html', context={"parking_lots":parkingLot.objects.all,
 		"parking_spots":parkingSpot.objects.all,
-		"occupied_history":occupiedHistory.objects.all,
+		"occupied_history":occupied_history,
 		"images": images,
-		"parking_spots_json":parking_spots,
-		"occupied_json":occupied_json,
+		"parking_spots_json":parking_spots_json,
 		"todays_spots":todays_spots})
 
 
