@@ -45,11 +45,15 @@
   <script>
 
   		var spaces = {{ parking_spots_json | safe }};
+  		var parkingLots = {{ parking_lots_json | safe }};
+  		var lotNames = document.getElementsByClassName('lotName');
+  		var lotImages = document.getElementsByClassName('pkLot');
+  		let map;
 
 		// Initialize and add the map
 		function initMap() {
 		  // The location of Uluru
-		  var lot = {lat: 39.950700, lng: -75.591700};
+		  var lot = {lat: parseFloat(parkingLots[0].lat), lng: parseFloat(parkingLots[0].long)};
 		  
 		  var mapOptions = {
 		    zoom: 18,
@@ -59,7 +63,7 @@
 
 
 		  // The map, centered at Uluru
-		  var map = new google.maps.Map(
+		  map = new google.maps.Map(
 		      document.getElementById('map'), mapOptions);
 
 		  // add parking spaces to map 
@@ -91,14 +95,39 @@
 		  	}
 		  }
 
-		//   setTimeout(function(){
-		// 	// map.panTo({lat:39.951478, lng:-75.592974})
-		 
-		// },1000)
+		  
+
+		  
+			  
 		}
 
+		lotNames[0].style.display = "block";
+		lotImages[0].style.display = "block";
 
-		setTimeout(function(){
+		let num =0;
+		setInterval(function(){
+		  	if(num>=parkingLots.length){
+		  		lotNames[lotNames.length-1].style.display = "none";
+		  		lotImages[lotImages.length-1].style.display = "none";
+		  		num =0;
+		  	}
+		  	
+		  	
+		  	// pan map to next parking lot
+		  	map.panTo({lat: parseFloat(parkingLots[num].lat), lng:parseFloat(parkingLots[num].long)});
+		  	if(num>0){
+		  		lotNames[num-1].style.display = "none";
+		  		lotImages[num-1].style.display = "none";
+		  	}
+			lotNames[num].style.display = "block";
+		  	lotImages[num].style.display = "block";
+		  	console.log(num)
+
+		 	num++;
+		},5000)
+	
+
+		setInterval(function(){
   			 window.location.reload(1);
 		}, 500000);
 

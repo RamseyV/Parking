@@ -30,6 +30,7 @@ body{
 }
 
 .lotName{
+	display: none;
 	bottom: 0px;
 	margin-bottom: 0px;
 	padding-bottom: 0px;
@@ -41,6 +42,7 @@ body{
 }
 
 .pkLot{
+	display: none;
 	padding-top: 1em;
 	margin-top: 0px;
 	top:0px;

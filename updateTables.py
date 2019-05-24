@@ -63,7 +63,7 @@ class updateTables():
 		
 
 
-	"""
+	
 	# updates 'image' and 'segmentedImage' in parkingLot
 	def updateImages(self, image, segmentedImage):
 		i=0
@@ -75,11 +75,11 @@ class updateTables():
 			img.save(img_dir + p.lotName+'.jpg')
 			# simg = Image.open(segmentedImage[i])
 			segmentedImage[i].save(img_dir+ p.lotName+'_segmented.jpg')
-			parkingLot.objects.filter(lotName=p.lotName).update(image=img_dir + p.lotName+'.jpg',
-			segmentedImage=img_dir+ p.lotName+'_segmented.jpg')			
+			# parkingLot.objects.filter(lotName=p.lotName).update(image=img_dir + p.lotName+'.jpg',
+			# segmentedImage=img_dir+ p.lotName+'_segmented.jpg')			
 			i+=1
 		
-	"""
+
 
 	"""
 	# Updates any occupied spots in the occupiedHistory table
