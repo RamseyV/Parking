@@ -11,18 +11,27 @@
 <link rel='stylesheet' href= "{% static '/parking/css/parking.css' %}" type='text/css'>
 <!-- <link href= "{% static '/portfolio/js/education.js' %}" type='text/css'> -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.5.16/p5.min.js" type="text/javascript"></script>
-  <script id="Leaflet" src="https://unpkg.com/leaflet@1.1.0/dist/leaflet.js"></script>
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.1.0/dist/leaflet.css">
-  <!-- <script src="https://cdn.jsdelivr.net/npm/mappa-mundi@0.0.5" type="text/javascript"></script> -->
-	<script src="https://unpkg.com/mappa-mundi@0.0.5/dist/mappa.js" type="text/javascript"></script>
-
-	<script src="http://d3js.org/d3.v3.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+	
 
 	
 {% endblock %} 
 
 
 {% block content %}
+
+
+<div class="toggle">
+
+	<p class="toggleText">Auto switch parking lots: </p>
+
+	<!-- Rounded switch -->
+	<label class="switch">
+	  <input type="checkbox" id="togBtn" checked>
+	  <span class="slider round"></span>
+	</label>
+
+</div>
 
 <div id="map"></div>
 
@@ -42,17 +51,22 @@
 
 
 
+
+
   <script>
 
+  		// get the json files served by django 
   		var spaces = {{ parking_spots_json | safe }};
   		var parkingLots = {{ parking_lots_json | safe }};
+  		// get the pictures and their titles from html
   		var lotNames = document.getElementsByClassName('lotName');
   		var lotImages = document.getElementsByClassName('pkLot');
+  		// initialize map so it can be accessed later on 
   		let map;
 
 		// Initialize and add the map
 		function initMap() {
-		  // The location of Uluru
+		  // The location of first parking lot
 		  var lot = {lat: parseFloat(parkingLots[0].lat), lng: parseFloat(parkingLots[0].long)};
 		  
 		  var mapOptions = {
@@ -62,7 +76,7 @@
 		  };
 
 
-		  // The map, centered at Uluru
+		  // The map, centered at centered at first parking lot 
 		  map = new google.maps.Map(
 		      document.getElementById('map'), mapOptions);
 
@@ -101,32 +115,52 @@
 			  
 		}
 
+		// set the first parking lot to visible 
 		lotNames[0].style.display = "block";
 		lotImages[0].style.display = "block";
 
+		
+
+		var switchStatus = true;
+		$("#togBtn").on('change', function() {
+		    if ($(this).is(':checked')) {
+		        switchStatus = $(this).is(':checked');
+		        // alert(switchStatus);// To verify
+
+		    }
+		    else {
+		       switchStatus = $(this).is(':checked');
+		       // alert(switchStatus);// To verify
+		    }
+		});
+
+		// switch visible parking lot and map focus at set interval
 		let num =0;
 		setInterval(function(){
-		  	if(num>=parkingLots.length){
-		  		lotNames[lotNames.length-1].style.display = "none";
-		  		lotImages[lotImages.length-1].style.display = "none";
-		  		num =0;
-		  	}
-		  	
-		  	
-		  	// pan map to next parking lot
-		  	map.panTo({lat: parseFloat(parkingLots[num].lat), lng:parseFloat(parkingLots[num].long)});
-		  	if(num>0){
-		  		lotNames[num-1].style.display = "none";
-		  		lotImages[num-1].style.display = "none";
-		  	}
-			lotNames[num].style.display = "block";
-		  	lotImages[num].style.display = "block";
-		  	console.log(num)
+			if(switchStatus){
+			  	if(num>=parkingLots.length){
+			  		lotNames[lotNames.length-1].style.display = "none";
+			  		lotImages[lotImages.length-1].style.display = "none";
+			  		num =0;
+			  	}
+			  	
+			  	
+			  	// pan map to next parking lot
+			  	map.panTo({lat: parseFloat(parkingLots[num].lat), lng:parseFloat(parkingLots[num].long)});
+			  	if(num>0){
+			  		lotNames[num-1].style.display = "none";
+			  		lotImages[num-1].style.display = "none";
+			  	}
+				lotNames[num].style.display = "block";
+			  	lotImages[num].style.display = "block";
+			  	console.log(num)
 
-		 	num++;
+			 	num++;
+		 	}
 		},5000)
 	
 
+		// reload the page to get updated parking lot information 
 		setInterval(function(){
   			 window.location.reload(1);
 		}, 500000);
@@ -138,188 +172,10 @@
 
 
 
-<!-- Mappa JS
-
-	<script type="text/javascript">
-		let myMap;
-		let canvas;
-
-		var parking_spots_json = {{ parking_spots_json | safe }};
-
-		let r,g,b;
-		const mappa = new Mappa('Leaflet');
-
-
-		//39.951478, -75.592974  m-lot
-		var options = {
-			// m1 lot
-			lat:39.950700,
-			lng:-75.591700,
-			zoom:18,
-			style: "http://{s}.tile.osm.org/{z}/{x}/{y}.png",
-			// maptype: 'satellite',
-		}
-
-
-		// p5.js setup
-		function setup(){
-			canvas = createCanvas(windowWidth/2,windowHeight/2); 
-		    // Add a grey background
-		    // background(100);
-		    myMap = mappa.tileMap(options);
-		    myMap.overlay(canvas);
-		    r=242;
-			g=41;
-			b=14;
-			// fill(r,g,b);
-			myMap.onChange(drawPoints);
-
-
-		}
-
-
-		function drawPoints(){
-			clear();
-			for(var i in parking_spots_json){
-				
-				
-				if(parking_spots_json[i].occupied){
-					// fill= (242, 41, 14);
-					r=242;
-					g=41;
-					b=14;
-					fill(r,g,b);
-					const nigeria = myMap.latLngToPixel(parking_spots_json[i].lat, parking_spots_json[i].long);
-					ellipse(nigeria.x, nigeria.y, 10,10);
-					
-				}
-				else{
-					
-					// fill=(35, 237, 35);
-					r=35;
-					g=237;
-					b=35;
-					fill(r,g,b);
-					const nigeria = myMap.latLngToPixel(parking_spots_json[i].lat, parking_spots_json[i].long);
-					ellipse(nigeria.x, nigeria.y, 10,10);
-					
-				}
-				
-		}
-			// const nigeria = myMap.latLngToPixel(39.951452, -75.600079);
-			// ellipse(nigeria.x, nigeria.y, 2,2);
-		}
-
-		setTimeout(function(){
-  		 window.location.reload(1);
-		}, 500000);
-
-		setTimeout(function(){
-			myMap.panTo([39.951478, -75.592974])
-		 
-		},1000)
-	</script>
-
-
--->
-
 	<!-- Text about Project -->
 	<!-- <p class="Project">Project Information</p> -->
 	<div id="info"><p class="Project">Project Information</p><p class="infoText"> This project uses machine learning to detect which parking spaces are being currently occupied. The map in the upper left hand corner is showing M1 Lot on the corner of S. Matlack and E. Campus Dr. This is the parking lot next to the parking garage on Matlack. The red dots show which spots are currently being taken up by cars, conversely we know which parking spots are empty. The image above is the output of the Mask-RCNN neural network that is used to detect and segment the cars.The graph to the left shows how many cars have been in this parking lot throughout today, that this camera can see. The methods used in this project were designed to easily allow other parking lots to be added to it. </p>
 	 </div>
-
-
-
-<!-- Script for D3 bar graph -->
- <!-- <script>
-		var data = {{ todays_spots | safe }};
-		var margin = {top: 20, right: 20, bottom: 70, left: 40},
-		    width = 600 - margin.left - margin.right,
-		    height = 300 - margin.top - margin.bottom;
-
-		// Parse the date / time
-		var	parseDate = d3.time.format("%H:%M:%S").parse;
-
-		var x = d3.scale.ordinal().rangeRoundBands([0, width], .05);
-
-		var y = d3.scale.linear().range([height, 0]);
-
-		var xAxis = d3.svg.axis()
-		    .scale(x)
-		    .orient("bottom")
-		    .tickFormat(d3.time.format("%H:%M:%S"));
-
-		var yAxis = d3.svg.axis()
-		    .scale(y)
-		    .orient("left")
-		    .ticks(10);
-
-		var svg = d3.select("body").append("svg")
-		    .attr("width", width + margin.left + margin.right)
-		    .attr("height", height + margin.top + margin.bottom)
-		  .append("g")
-		    .attr("transform", 
-		          "translate(" + margin.left + "," + margin.top + ")");
-		
-
-		
-		// data.keys(obj).forEach(function(key){
-		// 	d.Date = key
-		// 	d.Total = obj[key]
-		// })
-		data.forEach(function(d) {
-			console.log(d.date)
-    		d.date = parseDate(d.date);
-    		console.log(d.date)
-    		d.total = d.total;
-  		});
-
-		// x.domain(d3.extent(function(d) {
-		//     return d.time;
-		//   }));
-
-		x.domain(data.map(function(d) {
-		    return d.date;
-		  }));
-
-		y.domain([0, d3.max(data, function(d) {
-		    return d.total;
-		})]);
-
-		// add axis
-		 svg.append("g")
-		      .attr("class", "x axis")
-		      .attr("transform", "translate(0," + height + ")")
-		      .call(xAxis)
-		      .selectAll("text")
-		      .style("text-anchor", "end")
-		      .attr("dx", "-.8em")
-		      .attr("dy", "-.55em")
-		      .attr("transform", "rotate(-90)" );
-
-		 svg.append("g")
-		      .attr("class", "y axis")
-		      .call(yAxis)
-		      .append("text")
-		      .attr("transform", "rotate(-90)")
-		      .attr("y", 5)
-		      .attr("dy", ".71em")
-		      .style("text-anchor", "end")
-		      .text("Total Cars Detected Throughout the Day");
-
-
-		 // Add bar chart
-		 svg.selectAll("bar")
-		      .data(data)
-		      .enter().append("rect")
-		      .attr("class", "bar")
-		      .attr("x", function(d) { return x(d.date); })
-		      .attr("width", x.rangeBand())
-		      .attr("y", function(d) { return y(d.total); })
-		      .attr("height", function(d) { return height - y(d.total); });
-
-		
-	</script> -->
 
  
 
