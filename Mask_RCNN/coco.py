@@ -50,10 +50,10 @@ from . import utils
 from . import model as modellib
 
 # Root directory of the project
-ROOT_DIR =  'C:/Users/ramse/Dropbox/mysite/parking/'
+ROOT_DIR =  '/home/ramsey/mysite/mysite/parking/'
 
 # Path to trained weights file
-COCO_MODEL_PATH = 'C:/Users/ramse/Dropbox/mysite/parking/Mask_RCNN/mask_rcnn_coco.h5'
+COCO_MODEL_PATH = '/home/ramsey/mysite/mysite/parking/Mask_RCNN/mask_rcnn_coco.h5'
 
 # Directory to save logs and model checkpoints, if not provided
 # through the command line argument --logs

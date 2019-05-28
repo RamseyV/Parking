@@ -71,7 +71,7 @@ class updateTables():
 			# p.image = image[i]
 			# p.segmentedImage = segmentedImage[i]
 			img = Image.fromarray(image[i])
-			img_dir = '/Users/ramseyvillarreal/Dropbox/mysite/parking/static/parking/images/'
+			img_dir = '/home/ramsey/mysite/mysite/parking/'
 			img.save(img_dir + p.lotName+'.jpg')
 			# simg = Image.open(segmentedImage[i])
 			segmentedImage[i].save(img_dir+ p.lotName+'_segmented.jpg')

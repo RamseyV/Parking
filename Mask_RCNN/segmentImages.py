@@ -27,10 +27,10 @@ from keras.backend import clear_session
 
 # ROOT_DIR =  'C:/Users/ramse/Dropbox/mysite/parking/'
 # Directory to save logs and trained model
-MODEL_DIR = '/Users/ramseyvillarreal/Dropbox/mysite/parking/Mask_RCNN/logs'
+MODEL_DIR = '/home/ramsey/mysite/mysite/parking/Mask_RCNN/logs'
 # print(MODEL_DIR)
 # Local path to trained weights file
-COCO_MODEL_PATH = '/Users/ramseyvillarreal/Dropbox/mysite/parking/Mask_RCNN/mask_rcnn_coco.h5'
+COCO_MODEL_PATH = '/home/ramsey/mysite/mysite/parking/Mask_RCNN/mask_rcnn_coco.h5'
 # Download COCO trained weights from Releases if needed
 if not os.path.exists(COCO_MODEL_PATH):
 		utils.download_trained_weights(COCO_MODEL_PATH)
