@@ -11,7 +11,11 @@ from .models import parkingLot, parkingSpot
 
 
 # admin.site.register(Subjects)
-
+'''
+class ParkingAdmin(admin.ModelAdmin):
+    class Media:
+        js = (settings.STATIC_URL + "geoposition/geoposition.js",)
+'''
 
 admin.site.register(parkingLot)
 admin.site.register(parkingSpot)
