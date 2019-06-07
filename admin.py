@@ -1,5 +1,6 @@
 from django.contrib import admin
 from .models import parkingLot, parkingSpot
+from django.conf import settings
 
 # class WCUClassesAdmin(admin.ModelAdmin):
 # 	 fieldsets = [
@@ -11,12 +12,12 @@ from .models import parkingLot, parkingSpot
 
 
 # admin.site.register(Subjects)
-'''
+
 class ParkingAdmin(admin.ModelAdmin):
     class Media:
         js = (settings.STATIC_URL + "geoposition/geoposition.js",)
-'''
 
-admin.site.register(parkingLot)
-admin.site.register(parkingSpot)
+
+admin.site.register(parkingLot, ParkingAdmin)
+admin.site.register(parkingSpot, ParkingAdmin)
 # admin.site.register(occupiedHistory)

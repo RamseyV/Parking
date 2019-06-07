@@ -87,6 +87,7 @@ body{
 	width: 100%;
 	align-content: center;
 	text-align: center;
+	z-index: 10;
 
 }
 
@@ -165,8 +166,8 @@ input:checked + .slider:before {
 @media screen and (min-width: 768px){
 
 	#map {
-	        height: 60%;  /* The height is 400 pixels */
-	        width: 45%;  /* The width is the width of the web page */
+	        height: 60%;  
+	        width: 45%;  
 	        padding-top: 0px;
 			top: 20%;
 			position: absolute;
@@ -176,8 +177,8 @@ input:checked + .slider:before {
 
 	#lot{
 		height: 60%;
-		width: 40%;
-		top:15%;
+		max-width: 40%;
+		top:20%;
 		right:5%;
 		padding: 0%;
 		text-align: center;
@@ -201,6 +202,7 @@ input:checked + .slider:before {
 		margin-top: 0px;
 		top:0px;
 		width: 100%;
+		max-height: 80%;
 	}
 
 	#info{
@@ -222,11 +224,12 @@ input:checked + .slider:before {
 	}
 
 	.toggle{
-		top:75%;
+		top:85%;
 		width: 40%;
 		right:5%;
 		align-content: center;
 		text-align: center;
+
 
 	}
 
