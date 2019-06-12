@@ -49,11 +49,14 @@ from .config import Config
 from . import utils
 from . import model as modellib
 
-# Root directory of the project
-ROOT_DIR =  '/home/ramsey/mysite/mysite/parking/'
+from django.conf import settings
 
+# Root directory of the project
+# ROOT_DIR =  '/home/ramsey/mysite/mysite/parking/'
+ROOT_DIR = settings.BASE_DIR
 # Path to trained weights file
-COCO_MODEL_PATH = '/home/ramsey/mysite/mysite/parking/Mask_RCNN/mask_rcnn_coco.h5'
+# COCO_MODEL_PATH = '/home/ramsey/mysite/mysite/parking/Mask_RCNN/mask_rcnn_coco.h5'
+COCO_MODEL_PATH = os.path.join(ROOT_DIR, 'parking/Mask_RCNN/mask_rcnn_coco.h5')
 
 # Directory to save logs and model checkpoints, if not provided
 # through the command line argument --logs

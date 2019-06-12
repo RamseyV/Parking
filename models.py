@@ -12,6 +12,9 @@ class parkingLot(models.Model):
 	imageURL = models.URLField(max_length=200)
 	lotPosition = GeopositionField(default='39.958, -75.601',null=True, blank=True)
 	lastUpdate = models.DateTimeField(default=timezone.now(), blank=True)
+	lotImage = models.ImageField(blank=True)
+	segmentedLotImage = models.ImageField(blank=True)
+
 	def __str__(self):
 		return self.lotName
 

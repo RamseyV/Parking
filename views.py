@@ -21,7 +21,7 @@ def parking(request):
 	elapsed_time = now - first_lot_time
 	print(elapsed_time.seconds)
 	# call updateTables() if it has been more than 600 seconds since the tables were last updated
-	if(elapsed_time.seconds > 600):
+	if(elapsed_time.seconds > 300):
 		for p in parking_lots:
 			parkingLot.objects.filter(lotName = p.lotName).update(lastUpdate=datetime.now(timezone.utc))
 		updateTables()
@@ -39,7 +39,7 @@ def parking(request):
 	# static path for all of the images
 	images = []
 	for p in parking_lots:
-		path = 'parking/images/' + p.lotName + '_segmented.jpg'
+		path = 'media/' + p.lotName + '_segmented.jpg'
 		images.append(path)
 
 

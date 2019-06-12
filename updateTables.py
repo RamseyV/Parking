@@ -5,7 +5,8 @@ from .Mask_RCNN.segmentImages import segmentImages
 from io import BytesIO
 import cv2
 import numpy as np
-
+import os
+from django.conf import settings
 
 class updateTables():
 
@@ -71,12 +72,28 @@ class updateTables():
 			# p.image = image[i]
 			# p.segmentedImage = segmentedImage[i]
 			img = Image.fromarray(image[i])
-			img_dir = '/home/ramsey/mysite/mysite/parking/'
-			img.save(img_dir + p.lotName+'.jpg')
+			# img_dir = '/home/ramsey/mysite/mysite/media/'
+			img_dir = os.path.join(settings.BASE_DIR, 'static/media/')
+			parking_static_dir = os.path.join(settings.BASE_DIR, 'parking/static/media/')
+
+
+			img_path = img_dir + p.lotName+'.jpg'
+			img.save(img_path)
+			parking_static_img_path = parking_static_dir + p.lotName+'.jpg'
+			img.save(parking_static_img_path)
+
+			img_save_at = '/static/media/' + p.lotName+'.jpg'
 			# simg = Image.open(segmentedImage[i])
-			segmentedImage[i].save(img_dir+ p.lotName+'_segmented.jpg')
+			segmented_path = img_dir+ p.lotName+'_segmented.jpg'
+			segmentedImage[i].save(segmented_path)
+			parking_static_segmented_path = parking_static_dir + p.lotName + '_segmented.jpg'
+			segmentedImage[i].save(parking_static_segmented_path)
+
+
+			segment_save_at = '/static/media/' + p.lotName+'_segmented.jpg'
 			# parkingLot.objects.filter(lotName=p.lotName).update(image=img_dir + p.lotName+'.jpg',
-			# segmentedImage=img_dir+ p.lotName+'_segmented.jpg')			
+			# segmentedImage=img_dir+ p.lotName+'_segmented.jpg')
+			self.parking_lots.filter(lotName=p.lotName).update(lotImage=img_save_at, segmentedLotImage=segment_save_at)			
 			i+=1
 		
 
