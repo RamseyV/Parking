@@ -5,8 +5,7 @@ from .Mask_RCNN.segmentImages import segmentImages
 from io import BytesIO
 import cv2
 import numpy as np
-import os
-from django.conf import settings
+
 
 class updateTables():
 
@@ -54,7 +53,7 @@ class updateTables():
 		return images
 
 
-	# Call script to segment image
+	# Call script to segment image 
 	def getSegmentation(self, imgs):
 		# cv2.imshow(imgs[0])
 		print(type(imgs[0]))
@@ -72,28 +71,12 @@ class updateTables():
 			# p.image = image[i]
 			# p.segmentedImage = segmentedImage[i]
 			img = Image.fromarray(image[i])
-			# img_dir = '/home/ramsey/mysite/mysite/media/'
-			img_dir = os.path.join(settings.BASE_DIR, 'static/media/')
-			parking_static_dir = os.path.join(settings.BASE_DIR, 'parking/static/media/')
-
-
-			img_path = img_dir + p.lotName+'.jpg'
-			img.save(img_path)
-			parking_static_img_path = parking_static_dir + p.lotName+'.jpg'
-			img.save(parking_static_img_path)
-
-			img_save_at = '/static/media/' + p.lotName+'.jpg'
+			img_dir = '/home/ramsey/mysite/mysite/static/parking/images'
+			img.save(img_dir + p.lotName+'.jpg')
 			# simg = Image.open(segmentedImage[i])
-			segmented_path = img_dir+ p.lotName+'_segmented.jpg'
-			segmentedImage[i].save(segmented_path)
-			parking_static_segmented_path = parking_static_dir + p.lotName + '_segmented.jpg'
-			segmentedImage[i].save(parking_static_segmented_path)
-
-
-			segment_save_at = '/static/media/' + p.lotName+'_segmented.jpg'
+			segmentedImage[i].save(img_dir+ p.lotName+'_segmented.jpg')
 			# parkingLot.objects.filter(lotName=p.lotName).update(image=img_dir + p.lotName+'.jpg',
 			# segmentedImage=img_dir+ p.lotName+'_segmented.jpg')
-			self.parking_lots.filter(lotName=p.lotName).update(lotImage=img_save_at, segmentedLotImage=segment_save_at)			
 			i+=1
 
 
@@ -116,7 +99,7 @@ class updateTables():
 		print(total)
 		entry = occupiedHistory.create(totalSpots=total)
 		entry.save()
-
+		
 	"""
 
 	# get the x and y coordinates of the spots from parkingLot table - returns list of tuples in form of [(x1,y1), (x2,y2) ... ]
@@ -128,8 +111,7 @@ class updateTables():
 	# Determine if a spot location is being covered by a car
 	def findOccupiedSpots(self, rois):
 		i=0
-		for p in self.parking_lots:
-			print("ROI number: ", i)
+		for p in self.parking_lots:	
 			spots = parkingSpot.objects.filter(lot=p)
 			spot_locations = [(p.x,p.y) for p in spots]
 			current_rois = rois[i]
@@ -149,9 +131,9 @@ class updateTables():
 					if(spot.x > roi[1] and spot.x < roi[3] and spot.y >roi[0] and spot.y<roi[2]):
 						canidates.append({'x':spot.x,'y':spot.y})
 						# parkingSpot.objects.filter(x=spot.x, y=spot.y).update(occupied=True)
-
+				
 				if(len(canidates) == 0 ):
-					for spot in spots:
+					for spot in spots:	
 						if(spot.x > roi[1] and spot.x < roi[3]):
 							car_height = roi[2] - roi[0]
 							if(spot.y > roi[0] and spot.y < (roi[2]+car_height)):
@@ -160,8 +142,8 @@ class updateTables():
 
 				if(len(canidates) > 0):
 
-					for n, can in enumerate(canidates):
-						if(n==0):
+					for i, can in enumerate(canidates):
+						if(i==0):
 							lowest_canidate = can
 						else:
 							if(can.get('y') > lowest_canidate.get('y')):
@@ -171,11 +153,11 @@ class updateTables():
 					# else:
 					# 	parkingSpot.objects.filter(x=spot.x, y=spot.y).update(occupied=False)
 
-			print("roi number before: ", i)
-			i = i+1
-			print("roi number after: ", i)
 
+			i+=1
+					
 
+		
 
 
 
